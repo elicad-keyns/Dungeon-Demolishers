@@ -1,50 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Entity
+public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;
-    private Rigidbody2D rb;
-    private Weapon weapon;
+    public float weaponRange = 1f;
+    public GameObject weapon;
 
-    // Start is called before the first frame update
+    private Transform enemy;
+    private float timeSinceLastShot = 0f;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        weapon = GetComponent<Weapon>();
+        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
     }
 
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        // Handle player movement
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        transform.position += new Vector3(horizontalInput, verticalInput, 0) * speed * Time.deltaTime;
 
-        if (horizontal > 0) {
-            transform.localScale = new Vector3(1, 1, 1);
-        } else if (horizontal == 0) {
-
-        } else {
-            transform.localScale = new Vector3(-1, 1, 1);
+        // Handle weapon behavior
+        if (Vector3.Distance(transform.position, enemy.position) <= weaponRange)
+        {
+            if (timeSinceLastShot >= weapon.GetComponent<Weapon>().fireRate)
+            {
+                weapon.GetComponent<Weapon>().Fire();
+                timeSinceLastShot = 0f;
+            }
         }
-
-        Vector2 movement = new Vector2(horizontal, vertical).normalized * speed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
-
-        if (health < 1) {
-            Destroy(this);
-        }
+        timeSinceLastShot += Time.deltaTime;
     }
-
-    void FixedUpdate()
-    {
-
-    }
-
-    void onTriggerEnter(Collider other) {
-        if (other.CompareTag("Enemy")) {
-            weapon.Shoot(other.GetComponent<Transform>());
-        }
-    }
-
 }

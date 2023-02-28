@@ -1,14 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Entity
 {
-    public float speed = 1f;
+    public float speed = 10f;
+    public int damage = 1;
 
-    // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        transform.position += transform.up * speed * Time.deltaTime;
+    }
+
+    public void SetDamage(int damage)
+    {
+        this.damage = damage;
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            other.gameObject.GetComponent<EnemyHealth>().TakeDamage(damage);
+        }
+        Destroy(gameObject);
     }
 }

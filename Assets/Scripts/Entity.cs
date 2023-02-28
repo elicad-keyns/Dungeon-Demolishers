@@ -25,9 +25,14 @@ public class Entity : MonoBehaviour, IHelthSystem
         health += heal;
     }
 
+    public void doDie() {
+        Destroy(this);
+    }
+
 }
 
 public interface IHelthSystem {
     void doDamage(int damage);
     void doHeal(int heal);
+    void doDie();
 }

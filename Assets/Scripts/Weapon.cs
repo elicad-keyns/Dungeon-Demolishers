@@ -1,23 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : Entity
 {
-    public Transform character;
-    public GameObject bulletPrefab;
-    public float fireRate = 2f;
+    public float fireRate = 0.5f;
+    public int damage = 1;
 
-    // Start is called before the first frame update
+    public GameObject bulletPrefab;
+
     void Start()
     {
-        InvokeRepeating("Shoot", fireRate, fireRate);
+        InvokeRepeating("Fire", fireRate, fireRate);
     }
 
-    public void Shoot(Transform enemy) 
+    public void Fire()
     {
-        GameObject bullet = Instantiate(bulletPrefab, character.position, character.rotation);
-        Vector3 direction = enemy.transform.position - character.position;
-        bullet.transform.LookAt(enemy.transform.position);
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bullet.tag = "Bullet";
+        Debug.Log("Shot!");
     }
 }

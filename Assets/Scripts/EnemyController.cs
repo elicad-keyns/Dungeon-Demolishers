@@ -1,57 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : Entity
 {
-    public float moveSpeed = 5.0f;
-    private Rigidbody2D rb;
-    private Transform target;
-    
+    public float speed = 3f;
+    public int damage = 1;
 
-    // Start is called before the first frame update
+    private Transform player;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
-        if (target == null) return;
-        // Определяем направление к цели
-        Vector2 direction = target.position - transform.position;
-
-        if (direction.x > 0) {
-            transform.localScale = new Vector3(1, 1, 1);
-        } else if (direction.x == 0) {
-
-        } else {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-
-        // Поворачиваем врага в сторону цели
-        // transform.right = direction;
+        // Move towards the player
+        transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
 
-    void FixedUpdate()
+    void OnCollisionEnter2D(Collision2D other)
     {
-        if (target == null) return;
-        // Определяем направление к цели
-        Vector2 direction = target.position - transform.position;
-
-        // Нормализуем направление и устанавливаем скорость
-        direction.Normalize();
-        rb.velocity = direction * moveSpeed;
-    }
-
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Player")) {
-            target = other.GetComponent<Transform>();
-
-            // PlayerController player = other.GetComponent<PlayerController>();
-            // player.doDamage(10);
+        if (other.gameObject.tag == "Player")
+        {
+            Debug.Log("Damage from the enemy!");
+        } 
+        if (other.gameObject.tag == "Bullet")
+        {
+            Debug.Log("Enemy got shot!");
         }
     }
-
-
 }
