@@ -4,13 +4,13 @@ using UnityEngine;
 
 public abstract class BaseWeapon : MonoBehaviour
 {
-    public float fireRate { get; }
-    public int damage { get; }
+    public abstract float FireRate { get; set; }
+    public abstract int Damage { get; set; }
 
     protected BaseWeapon(float fireRate, int damage)
     {
-        this.fireRate = fireRate;
-        this.damage = damage;
+        this.FireRate = fireRate;
+        this.Damage = damage;
     }
 
     public abstract void Attack(Entity entity);

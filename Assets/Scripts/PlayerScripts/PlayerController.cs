@@ -1,3 +1,5 @@
+using System;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerController : Entity
@@ -6,7 +8,7 @@ public class PlayerController : Entity
 
     public float speed = 5f;
     public float weaponRange = 1f;
-    public BaseWeapon weapon;
+    public GameObject[] weapons;
 
     private Vector3 rotation = new Vector3(1, 1, 1);
 
@@ -18,7 +20,6 @@ public class PlayerController : Entity
         //weapon = new PistolWeapon(Random.Range(1, 5), Random.Range(5, 20));
         rb = GetComponent<Rigidbody2D>();
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
-        doDie();
     }
 
     private void Update()
@@ -38,8 +39,9 @@ public class PlayerController : Entity
             transform.localScale = rotation; 
         }
 
-        Vector2 movement = new Vector2(horizontalInput, verticalInput).normalized * speed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
+        //Vector2 movement = new Vector2(horizontalInput, verticalInput).normalized * speed * Time.deltaTime;
+        //rb.MovePosition(rb.position + movement);
+        transform.position += new Vector3(horizontalInput, verticalInput) * speed * Time.deltaTime;
 
         // Handle weapon behavior
         //if (Vector3.Distance(transform.position, enemy.position) <= weaponRange)
@@ -58,6 +60,10 @@ public class PlayerController : Entity
         if (collision.CompareTag("Enemy"))
         {
             Debug.Log("ֲנאד ימבאםûי");
+        } else if (collision.CompareTag("Weapon"))
+        {
+            collision.gameObject.transform.parent = this.gameObject.transform;
+            collision.gameObject.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 
@@ -72,6 +78,11 @@ public class PlayerController : Entity
     private void FixedUpdate()
     {
         
+    }
+
+    private void addWeapon(BaseWeapon weapon, int radius)
+    {
+
     }
 
     public override void doDie()
