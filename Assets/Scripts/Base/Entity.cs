@@ -2,19 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour, IHelthSystem
+public abstract class Entity : MonoBehaviour, IHelthSystem
 {
     protected int health = 100;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 
     public void doDamage(int damage) {
         Debug.Log(damage + " урона ептель");
@@ -25,14 +15,11 @@ public class Entity : MonoBehaviour, IHelthSystem
         health += heal;
     }
 
-    public void doDie() {
-        Destroy(this);
-    }
+    public abstract void doDie();
 
 }
 
 public interface IHelthSystem {
     void doDamage(int damage);
     void doHeal(int heal);
-    void doDie();
 }

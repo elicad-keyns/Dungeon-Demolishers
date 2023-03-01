@@ -12,16 +12,17 @@ public class CameraController : MonoBehaviour
     }
 
     void Update()
-{
-    // Получаем текущую позицию камеры
-    Vector3 currentPosition = transform.position;
+    {
+        if (player == null) return;
+        // Получаем текущую позицию камеры
+        Vector3 currentPosition = transform.position;
 
-    // Получаем текущую позицию игрока
-    Vector3 targetPosition = player.position;
+        // Получаем текущую позицию игрока
+        Vector3 targetPosition = player.position;
 
-    // Изменяем позицию камеры, чтобы она следовала за игроком
-    currentPosition.x = targetPosition.x;
-    currentPosition.y = targetPosition.y;
-    transform.position = currentPosition;
-}
+        // Изменяем позицию камеры, чтобы она следовала за игроком
+        currentPosition.x = targetPosition.x;
+        currentPosition.y = targetPosition.y;
+        transform.position = currentPosition;
+    }
 }

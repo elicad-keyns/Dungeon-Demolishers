@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Weapon : Entity
+public class Weapon : MonoBehaviour
 {
     public float fireRate = 0.5f;
     public int damage = 1;

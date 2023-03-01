@@ -14,6 +14,7 @@ public class EnemyController : Entity
 
     void Update()
     {
+        if (player == null) return;
         // Move towards the player
         transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
@@ -28,5 +29,10 @@ public class EnemyController : Entity
         {
             Debug.Log("Enemy got shot!");
         }
+    }
+
+    public override void doDie()
+    {
+        Destroy(this.gameObject);
     }
 }
