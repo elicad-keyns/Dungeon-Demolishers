@@ -18,7 +18,6 @@ public class PlayerController : Entity
         //weapon = new PistolWeapon(Random.Range(1, 5), Random.Range(5, 20));
         rb = GetComponent<Rigidbody2D>();
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
-        doDie();
     }
 
     private void Update()
@@ -33,13 +32,15 @@ public class PlayerController : Entity
             rotation.x = 1;
             transform.localScale = rotation;
         }
-        else if (horizontalInput < 0) {
+        else if (horizontalInput < 0)
+        {
             rotation.x = -1;
-            transform.localScale = rotation; 
+            transform.localScale = rotation;
         }
 
         Vector2 movement = new Vector2(horizontalInput, verticalInput).normalized * speed * Time.fixedDeltaTime;
-        rb.MovePosition(rb.position + movement);
+        //rb.MovePosition(rb.position + movement);
+        transform.position += new Vector3(horizontalInput, verticalInput) * speed * Time.deltaTime;
 
         // Handle weapon behavior
         //if (Vector3.Distance(transform.position, enemy.position) <= weaponRange)
